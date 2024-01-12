@@ -1,0 +1,225 @@
+﻿@using System.Globalization
+@model IEnumerable<HexaReportApp.Models.MonthlyReportDisplay>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Areas/Admin/Views/Shared/_Layout.cshtml";
+}
+
+
+<h1>Monthly Report</h1>
+
+<form method="post" asp-asp-controller="MonthReports" asp-action="Index">
+    <style>
+        .form-select,
+        .form-control {
+            height: 38px; /* Adjust the height as needed */
+        }
+    </style>
+
+    <div class="row">
+        <div class="col-md-6">
+            <input type="text" placeholder="Search by Company Name, Department Name, Employee Name & ID" name="Search" class="form-control" />
+        </div>
+
+        <div class="col-md-2">
+            <select name="month" class="form-select">
+                <option selected value="">Month</option>
+                @for (int i = 1; i <= 12; i++)
+                {
+                    <option value="@i">@DateTimeFormatInfo.CurrentInfo.GetMonthName(i)</option>
+                }
+            </select>
+        </div>
+        <div class="col-md-2">
+            <select name="year" class="form-select">
+                <option selected value="">Year</option>
+                @for (int i = 2015; i <= DateTime.Now.Year + 25; i++)
+                {
+                    <option value="@i">@i</option>
+                }
+            </select>
+        </div>
+        <div class="col-md-2">
+            <button type="submit" class="btn btn-primary">Search</button>
+        </div>
+    </div>
+<br />
+
+    @foreach (var summary in ViewBag.summaries)
+    {
+        <div class="row">
+            <div class="col-lg-2 col-4">
+                <div class="small-box bg-danger">
+                    <div class="inner">
+                        <h3>@summary.totalAbsent</h3>
+                        <p>Total Absent</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-person-stalker"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-2 col-4">
+                <div class="small-box bg-success">
+                    <div class="inner">
+                        <h3>@summary.totalPresentCount</h3>
+                        <p>Total Present</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-person-stalker"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-2 col-4">
+                <div class="small-box bg-info">
+                    <div class="inner">
+                        <h3>@summary.totalWOCount</h3>
+                        <p>Total WO Count</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-person-stalker"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-2 col-4">
+                <div class="small-box bg-warning">
+                    <div class="inner">
+                        <h3>@summary.totalLVCount</h3>
+                        <p>Total LV Count</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-person-stalker"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-2 col-4">
+                <div class="small-box bg-secondary">
+                    <div class="inner">
+                        <h3>@summary.totalHLCount</h3>
+                        <p>Total HL Count</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-person-stalker"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-2 col-4">
+                <div class="small-box bg-light">
+                    <div class="inner">
+                        <h3>@summary.totalOT</h3>
+                        <p>Total OT</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-person-stalker"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-2 col-4">
+                <div class="small-box bg-danger.bg-gradient">
+                    <div class="inner">
+                        <h3>@summary.totalOTPlusWork</h3>
+                        <p>Total OT + Work</p>
+                    </div>
+                    <div class="icon">
+                        <i class="ion ion-person-stalker"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Report.Empcode)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Employee.Name)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Employee.DeptName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Employee.CompName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Report.Date)
+                    </th>
+
+                    <th>
+                        @Html.DisplayNameFor(model => model.Report.MonthName)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Report.Intime)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Report.Outtime)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Report.WorkTime)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Report.OverTime)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Report.BreakTime)
+                    </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Report.Status)
+                    </th>
+
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    @if (item.Report.Empcode == summary.Empcode)
+                    {
+                        <tr>
+                            <td data-toggle="collapse" href="#collapseExample">
+                                @Html.DisplayFor(modelItem => item.Report.Empcode)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Employee.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Employee.CompName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Employee.DeptName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Report.DateString)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Report.MonthName) -  @Html.DisplayFor(modelItem => item.Report.Year)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Report.Intime)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Report.Outtime)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Report.WorkTime)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Report.OverTime)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Report.BreakTime)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Report.Status)
+                            </td>
+
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    }
+</form>
+   
