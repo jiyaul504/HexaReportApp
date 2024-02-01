@@ -10,6 +10,9 @@ namespace HexaReportApp
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+
+
+
             builder.Services.AddControllersWithViews().AddRazorRuntimeCompilation();
             builder.Services.AddDbContext<CtimeContext>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("CtimeConn")));
             var app = builder.Build();
@@ -31,7 +34,7 @@ namespace HexaReportApp
 
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Account}/{action=Login}/{id?}");
+                pattern: "{controller=Home}/{action=Index}/{id?}");
 
 
             //app.MapControllerRoute(
